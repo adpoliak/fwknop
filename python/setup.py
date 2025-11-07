@@ -35,7 +35,7 @@ from distutils.core import setup, Extension
 fko_ext = Extension(
     '_fko',
     define_macros = [('MAJOR_VERSION', '1'), ('MINOR_VERSION', '5')],
-                    include_dirs = ['../lib/'],
+                    include_dirs = ['../lib/', './py3c/include/'],
                     library_dirs = ['../lib/.libs'],
                     libraries = ['fko'],
                     sources = ['fkomodule.c']

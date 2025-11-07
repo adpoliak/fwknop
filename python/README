@@ -1,3 +1,16 @@
+=============================================================
+========================= ATTENTION =========================
+=============================================================
+THIS LIBRARY HAS BEEN MODIFIED THROUGH THE IMPLEMENTATION OF
+PY3C (https://py3c.readthedocs.io/en/latest/index.html)
+FOR SUPPORTING BUILDING UNDER BOTH PYTHON2 and PYTHON3.
+ENSURE AN UP-TO-DATE COPY OF PY3C IS PRESENT ON THE SYSTEM
+AT BUILD TIME OTHERWISE THE COPY OF THE LIBRARY EMBEDDED HERE
+WILL BE USED.
+
+ORIGINAL README CONTENTS FOLLOW...
+=============================================================
+
 fko python module version 1.0
 ==============================
 

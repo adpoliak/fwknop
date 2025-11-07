@@ -29,6 +29,7 @@
  *****************************************************************************
 */
 #include <Python.h>
+#include <py3c.h>
 #include <fko.h>
 
 /* A lot to figure out yet... */
@@ -279,18 +280,25 @@ static PyMethodDef FKOMethods[] = {
 /*****************************************************************************
  * Module init
 */
-PyMODINIT_FUNC
-init_fko(void)
+MODULE_INIT_FUNC(_fko)
 {
     PyObject *m;
 
-    m = Py_InitModule("_fko", FKOMethods);
+    static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,  /* m_base */
+        "_fko",                 /* m_name */
+        NULL,                   /* m_doc */
+        -1,                     /* m_size */
+        FKOMethods              /* m_methods */
+    };
+    m = PyModule_Create(&moduledef);
     if (m == NULL)
-        return;
+        return NULL;
 
     FKOError = PyErr_NewException("fko.error", NULL, NULL);
     Py_INCREF(FKOError);
     PyModule_AddObject(m, "error", FKOError);
+    return m;
 }
 
 
