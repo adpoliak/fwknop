@@ -1,0 +1,27 @@
+[project]
+authors = [
+	{name = 'Damien S. Stuart', email = 'dstuart@dstuart.org'}
+]
+name = "fko"
+version = "1.5"
+description = 'Wrapper for Fwknop library (libfko)'
+#long_description = 'Python module that wraps the fwknop library to provide the ability tovgenerate, decode, parse, and process SPA formatted messages.'
+license = 'GPL-2.0-or-later'
+readme = "README"
+requires-python = ">=3.10"
+dependencies = [
+    "py3c>=1.4",
+]
+
+[build-system]
+requires = ["setuptools>=74", 'py3c>=1.4']
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# Leaving this dict key out because of https://github.com/pypa/setuptools/issues/4810 (and the .c file doesn't reference the macros, anyway...
+#  define-macros = [['MAJOR_VERSION','1'],['MINOR_VERSION','5']]
+# Have to figure out how to access the py3c headers inside the build environment to put into include-dirs and remove the need to use the git submodule and embedding of files into source distro.
+ext-modules = [
+    {name = "_fko", sources = ["fkomodule.c"], include-dirs = ['../lib/', './py3c/include/'], library-dirs= ['../lib/.libs/'], libraries = ['fko'], optional = false}
+]
+py-modules = ['fko']
