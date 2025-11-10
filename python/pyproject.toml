@@ -10,11 +10,13 @@ license = 'GPL-2.0-or-later'
 readme = "README"
 requires-python = ">=3.10"
 dependencies = [
+    "modernize>=0.8.0",
     "py3c>=1.4",
+    "six>=1.17.0",
 ]
 
 [build-system]
-requires = ["setuptools>=74", 'py3c>=1.4']
+requires = ["setuptools>=74", 'py3c>=1.4', 'six>=1.17.0']
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]

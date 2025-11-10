@@ -3,15 +3,54 @@ revision = 3
 requires-python = ">=3.10"
 
 [[package]]
+name = "appdirs"
+version = "1.4.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41", size = 13470, upload-time = "2020-05-11T07:59:51.037Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128", size = 9566, upload-time = "2020-05-11T07:59:49.499Z" },
+]
+
+[[package]]
+name = "fissix"
+version = "24.4.24"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "appdirs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/11/fb/174b49419d4f4d057e65cecba8107a8074a67a3aea59bc80f4e50875b479/fissix-24.4.24.tar.gz", hash = "sha256:7e8f1e448d1ebc1c8be68be8bf71123650710076ea9dcecb7801804b04f43547", size = 160270, upload-time = "2024-04-24T08:11:00.758Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/c9/7d293a9ea42ef05d6260714f8cf641ba64fab438be55312b1c719d4e7cc6/fissix-24.4.24-py3-none-any.whl", hash = "sha256:be7f5c66e9e212bd9b3365c9e8f2453e973d0a645f31c8eba842724adb4c0c50", size = 188533, upload-time = "2024-04-24T08:10:57.139Z" },
+]
+
+[[package]]
 name = "fko"
 version = "1.5"
 source = { editable = "." }
 dependencies = [
+    { name = "modernize" },
     { name = "py3c" },
+    { name = "six" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "py3c", specifier = ">=1.4" }]
+requires-dist = [
+    { name = "modernize", specifier = ">=0.8.0" },
+    { name = "py3c", specifier = ">=1.4" },
+    { name = "six", specifier = ">=1.17.0" },
+]
+
+[[package]]
+name = "modernize"
+version = "0.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fissix" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e5/97/b7bb97eda53d8784b01dee37aa84dbb2212d89a465a913cd53284568c921/modernize-0.8.0.tar.gz", hash = "sha256:1672b4bb19a060a53dd0518cc8f70fc83591c7246e532223459f85d338c60f55", size = 21304, upload-time = "2020-09-27T13:29:43.442Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/73/6d/c381a4b811a3c529626268276512d1b5abef601e45bc04f0e797284b49bc/modernize-0.8.0-py2.py3-none-any.whl", hash = "sha256:b51f930ac9d726903f2c7f9038146d6061a14509140d6e4498827b19b5610120", size = 27243, upload-time = "2020-09-27T13:29:42.592Z" },
+]
 
 [[package]]
 name = "py3c"
@@ -19,4 +58,13 @@ version = "1.4"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/84/da/02c19dec3be18e46fcef0c02d379429a3cbd6e91e7c048b5b1c63ce5127d/py3c-1.4-py2.py3-none-any.whl", hash = "sha256:1c2574a77c6e42cb4900f7876dc62821f1b1221a647973c18c63a874e680fee6", size = 9404, upload-time = "2021-10-15T15:27:02.13Z" },
+]
+
+[[package]]
+name = "six"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
 ]

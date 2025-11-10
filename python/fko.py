@@ -66,8 +66,13 @@ Example simple minimal fknop client:
     s.sendto(f.spa_data(), (fko_host, fko_port))
     s.close()
 """
+from __future__ import absolute_import
 import _fko
-from string import join
+try:
+    from string import join
+except ImportError:
+    join = str.join
+from six.moves import map
 
 # FKO Constants definitions
 
@@ -1045,15 +1050,15 @@ class FkoAccess():
         """Internal function that validates a port or list of ports.
         """
         plist = []
-        if type(port) is int:
+        if isinstance(port, int):
             plist.append(port)
-        elif type(port) is list:
+        elif isinstance(port, list):
             plist += port
         else:
             raise FkoException("Invalid type: not an integer or a list")
 
         for p in plist:
-            if type(p) is not int:
+            if not isinstance(p, int):
                 raise FkoException("Port value not an integer")
             if p < 1 or p > 65535:
                 raise FkoException("Port value out of range: 1-65535")
@@ -1113,7 +1118,7 @@ class FkoAccess():
         """
         if len(self.port) < 1:
             raise FkoException("No port value in FkoAccess")
-        return self.host+','+self.proto+'/'+join(map(str,self.port),",")
+        return self.host+','+self.proto+'/'+join(list(map(str, self.port)), ",")
 
     def __call__(self):
         """Calls the str() method.
@@ -1133,7 +1138,7 @@ class FkoNatAccess():
             - ip   - IP address of the NAT destination.
             - port - Port number of the NAT destination.
         """
-        if type(port) is not int:
+        if not isinstance(port, int):
             raise FkoException("Port value not an integer")
         if port < 1 and port > 65535:
             raise FkoException("Port value out of range 1-65535")
