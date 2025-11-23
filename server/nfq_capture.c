@@ -70,6 +70,7 @@ static int process_nfq_packet(struct nfq_q_handle *qh,
         */
         pkt_len = nfq_get_payload(nfa, &full_packet);
 
+        opts->from_nfq = 1;
         process_packet(opts, pkt_len, full_packet);
 
         /* Verdict on what to do with the packet.  If it is coming from

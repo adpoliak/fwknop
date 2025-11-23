@@ -71,6 +71,12 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
 
     int                 offset = opts->data_link_offset;
 
+    /* from_nfq is set by the capture layer (pcap vs. NFQ). When non-zero,
+     * packets are expected to start at the IP header instead of an
+     * Ethernet header.
+     */
+    int                 from_nfq = opts->from_nfq;
+
 #if USE_LIBPCAP
     unsigned short      pkt_len = packet_header->len;
 
@@ -85,9 +91,22 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
 #else
     /* This is coming from NFQ and we get the packet lentgh as an arg.
     */
-    if (pkt_len < ETHER_HDR_LEN)
-        return;
-    fr_end = (unsigned char *) packet + pkt_len;
+    if (from_nfq)
+    {
+        /* NFQ payload starts at the IP header (no L2/Ethernet header). */
+        if (pkt_len < sizeof(struct iphdr))
+            return;
+
+        fr_end = (unsigned char *) packet + pkt_len;
+    }
+    else
+    {
+        /* Non-NFQ, non-libpcap callers still expect an Ethernet header. */
+        if (pkt_len < ETHER_HDR_LEN)
+            return;
+
+        fr_end = (unsigned char *) packet + pkt_len;
+    }
 #endif
 
     /* This is a hack to determine if we are using the linux cooked
@@ -95,37 +114,53 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
      * value it would be if the datalink is DLT_LINUX_SLL.  I don't
      * know if this is the correct way to do this, but it seems to work.
     */
-    unsigned char       assume_cooked = (offset == 16 ? 1 : 0);
+    unsigned char       assume_cooked;
 
-    /* The ethernet header.
-    */
-    eth_p = (struct ether_header*) packet;
-
-    eth_type = ntohs(*((unsigned short*)&eth_p->ether_type));
-
-    if(eth_type == 0x8100) /* 802.1q encapsulated */
+    if (from_nfq)
     {
-        offset += 4;
-        eth_type = ntohs(*(((unsigned short*)&eth_p->ether_type)+2));
+        /* For NFQ captures we treat the frame as "cooked" and skip all
+         * Ethernet/802.3/802.1q parsing below; the buffer starts at the
+         * IP header.
+         */
+        assume_cooked = 1;
+        /* offset is left as provided by opts->data_link_offset, which is
+         * expected to be 0 for NFQ.
+         */
     }
-
-    /* When using libpcap, pkthdr->len for 802.3 frames include CRC_LEN,
-     * but Ethenet_II frames do not.
-    */
-    if (eth_type > 1500 || assume_cooked == 1)
+    else
     {
-        pkt_len += ETHER_CRC_LEN;
+        assume_cooked = (offset == 16 ? 1 : 0);
 
-        if(eth_type == 0xAAAA)      /* 802.2 SNAP */
-            offset += 5;
+        /* The ethernet header.
+        */
+        eth_p = (struct ether_header*) packet;
+
+        eth_type = ntohs(*((unsigned short*)&eth_p->ether_type));
+
+        if(eth_type == 0x8100) /* 802.1q encapsulated */
+        {
+            offset += 4;
+            eth_type = ntohs(*(((unsigned short*)&eth_p->ether_type)+2));
+        }
+
+        /* When using libpcap, pkthdr->len for 802.3 frames include CRC_LEN,
+         * but Ethenet_II frames do not.
+        */
+        if (eth_type > 1500 || assume_cooked == 1)
+        {
+            pkt_len += ETHER_CRC_LEN;
+
+            if(eth_type == 0xAAAA)      /* 802.2 SNAP */
+                offset += 5;
+        }
+        else /* 802.3 Frame */
+            offset += 3;
+
+        /* Make sure the packet length is still valid.
+        */
+        if (! ETHER_IS_VALID_LEN(pkt_len) )
+            return;
     }
-    else /* 802.3 Frame */
-        offset += 3;
-
-    /* Make sure the packet length is still valid.
-    */
-    if (! ETHER_IS_VALID_LEN(pkt_len) )
-        return;
 
     /* Pull the IP header.
     */
