@@ -71,11 +71,11 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
 
     int                 offset = opts->data_link_offset;
 
-    /* no_ether_header is set by the capture layer (pcap vs. NFQ). When non-zero,
+    /* payload_starts_at_ip is set by the capture layer (pcap vs. NFQ). When non-zero,
      * packets are expected to start at the IP header instead of an
      * Ethernet header.
      */
-    unsigned char       no_ether_header = opts->no_ether_header;
+    unsigned char       payload_starts_at_ip = opts->payload_starts_at_ip;
 
 #if USE_LIBPCAP
     unsigned short      pkt_len = packet_header->len;
@@ -90,7 +90,7 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
     fr_end = (unsigned char *) packet + packet_header->caplen;
 #else
     /* For non-libpcap callers we get the packet length as an argument. */
-    if (no_ether_header)
+    if (payload_starts_at_ip)
     {
         /* NFQ payload starts at the IP header (no L2/Ethernet header). */
         if (pkt_len < sizeof(struct iphdr))
@@ -111,15 +111,10 @@ process_packet(PROCESS_PKT_ARGS_TYPE *args, PACKET_HEADER_META,
      * value it would be if the datalink is DLT_LINUX_SLL.  I don't
      * know if this is the correct way to do this, but it seems to work.
     */
-    unsigned char       assume_cooked;
+    unsigned char       assume_cooked = 0;
 
-    if (no_ether_header)
+    if (payload_starts_at_ip)
     {
-        /* For NFQ captures we treat the frame as "cooked" and skip all
-         * Ethernet/802.3/802.1q parsing below; the buffer starts at the
-         * IP header.
-         */
-        assume_cooked = 1;
         offset        = 0;   /* NFQ payload is L3-only (IP header at packet[0]). */
     }
     else

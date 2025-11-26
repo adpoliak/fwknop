@@ -730,7 +730,7 @@ typedef struct fko_srv_options
     /* Set to 1 when messages have to go through syslog, 0 otherwise */
     unsigned char   syslog_enable;
 
-    unsigned char   no_ether_header;    /* 0 = normal (pcap/other), 1 = NFQ capture */
+    unsigned char   payload_starts_at_ip;    /* 0 = normal (pcap/other), 1 = NFQ capture */
 
 } fko_srv_options_t;
 

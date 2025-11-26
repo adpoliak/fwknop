@@ -102,7 +102,7 @@ nfq_capture(fko_srv_options_t *opts)
     struct nfq_q_handle *nfq_qh;
     struct nfnl_handle  *nfq_nh;
 
-    opts->no_ether_header = 1;
+    opts->payload_starts_at_ip = 1;
 
     nfq_h = nfq_open();
     if (!nfq_h) {
@@ -280,7 +280,7 @@ nfq_capture(fko_srv_options_t *opts)
 
     nfq_destroy_queue(nfq_qh);
     nfq_close(nfq_h);
-    opts->no_ether_header = 0;
+    opts->payload_starts_at_ip = 0;
 
     return(0);
 }
