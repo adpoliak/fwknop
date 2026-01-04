@@ -14,3 +14,4 @@ exclude Doxyfile
 exclude MANIFEST.in
 exclude fwknop.spec
 recursive-include py3c/include *.h
+include config.h

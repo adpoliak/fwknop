@@ -26,10 +26,13 @@ build-backend = "setuptools.build_meta"
 #  define-macros = [['MAJOR_VERSION','1'],['MINOR_VERSION','5']]
 # Have to figure out how to access the py3c headers inside the build environment to put into include-dirs and remove the need to use the git submodule and embedding of files into source distro.
 ext-modules = [
-    {name = "_fko", sources = ["common/strlcpy.c", "common/strlcat.c", "common/fko_util.c", "lib/base64.c", "lib/cipher_funcs.c", "lib/digest.c", "lib/fko_client_timeout.c", "lib/fko_digest.c", "lib/fko_encode.c", "lib/fko_decode.c", "lib/fko_encryption.c", "lib/fko_error.c", "lib/fko_funcs.c", "lib/fko_message.c", "lib/fko_nat_access.c", "lib/fko_rand_value.c", "lib/fko_server_auth.c", "lib/fko_timestamp.c", "lib/fko_hmac.c", "lib/hmac.c", "lib/fko_user.c", "lib/md5.c", "lib/rijndael.c", "lib/sha1.c", "lib/sha2.c", "lib/sha3.c", "lib/gpgme_funcs.c", "python/fkomodule.c"], include-dirs = ['win32', 'lib', 'common', 'py3c/include'], library-dirs= ['lib/.libs/'], libraries = [], optional = false}
+    {name = "_fko", sources = ["common/strlcpy.c", "common/strlcat.c", "common/fko_util.c", "lib/base64.c", "lib/cipher_funcs.c", "lib/digest.c", "lib/fko_client_timeout.c", "lib/fko_digest.c", "lib/fko_encode.c", "lib/fko_decode.c", "lib/fko_encryption.c", "lib/fko_error.c", "lib/fko_funcs.c", "lib/fko_message.c", "lib/fko_nat_access.c", "lib/fko_rand_value.c", "lib/fko_server_auth.c", "lib/fko_timestamp.c", "lib/fko_hmac.c", "lib/hmac.c", "lib/fko_user.c", "lib/md5.c", "lib/rijndael.c", "lib/sha1.c", "lib/sha2.c", "lib/sha3.c", "lib/gpgme_funcs.c", "python/fkomodule.c"], include-dirs = ['win32', 'lib', 'common', 'py3c/include', '.'], library-dirs= ['lib/.libs/'], libraries = ['fko'], optional = false}
 ]
 py-modules = ['fko']
 
 [tool.setuptools.packages.find]
 where = ["python"]  # list of folders that contain the packages (["."] by default)
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.setuptools_scm]
+
