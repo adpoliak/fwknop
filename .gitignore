@@ -82,3 +82,6 @@ android/project/jni/libfwknop/*.c
 # Erlang
 erlang/_build
 erlang/rebar.lock
+
+# Python Build artifacts
+python/fko.egg-info

@@ -1,3 +1,3 @@
-[submodule "python/py3c"]
-	path = python/py3c
+[submodule "py3c"]
+	path = py3c
 	url = https://github.com/encukou/py3c.git

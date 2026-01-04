@@ -1,0 +1,16 @@
+recursive-exclude android *
+recursive-exclude client *
+recursive-exclude doc *
+recursive-exclude erlang *
+recursive-exclude extras *
+recursive-exclude iphone *
+recursive-exclude m4 *
+recursive-exclude perl *
+recursive-exclude server *
+recursive-exclude test *
+exclude .gitignore
+exclude .gitmodules
+exclude Doxyfile
+exclude MANIFEST.in
+exclude fwknop.spec
+recursive-include py3c/include *.h
